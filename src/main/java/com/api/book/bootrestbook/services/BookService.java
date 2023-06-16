@@ -38,4 +38,10 @@ public class BookService {
         list.add(b);
         return b;
     }
+
+    //delete book
+    public void deleteBook(int bid){
+        Book b=getBookById(bid);
+        list.remove(b);
+    }
 }
