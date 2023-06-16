@@ -42,8 +42,8 @@ public class BookService {
 
     //delete book
     public void deleteBook(int bid){
-        Book b=getBookById(bid);
-        list.remove(b);
+       
+        list.stream().filter(book->book.getId()!=bid).collect(Collectors.toList());
     }
 
     //update book
