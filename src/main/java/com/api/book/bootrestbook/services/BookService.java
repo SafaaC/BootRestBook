@@ -1,60 +1,46 @@
 package com.api.book.bootrestbook.services;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.api.book.bootrestbook.dao.BookRepository;
 import com.api.book.bootrestbook.entities.Book;
 @Component
 public class BookService {
     
-    //Fake Service
-
-    private static List<Book> list= new ArrayList<Book>();
-
-    static{
-        list.add(new Book(2, "SQL", "maryam") );
-        list.add(new Book(3, "Python", "Ibrahim") );
-        list.add(new Book(4, "WEB", "Saara") );
-    }
+    @Autowired
+   private BookRepository bookRepository;
 
     public List<Book> getAllBooks(){
+        List<Book> list= (List<Book>) this.bookRepository.findAll();
         return list;
     }
+
+    
     public Book getBookById(int id){
         
-        for (Book book : list) {
-            if(book.getId()==id){
-                return book;
-            }
-            
-        }
-        return null;
+        Book book=bookRepository.findById(id);
+        return book;
     }
 
     //adding book
     public Book addBook(Book b){
-        list.add(b);
+        bookRepository.save(b);
         return b;
     }
 
     //delete book
     public void deleteBook(int bid){
        
-        list.stream().filter(book->book.getId()!=bid).collect(Collectors.toList());
+        bookRepository.deleteById(bid);
     }
 
     //update book
     public void updateBook(Book book, int bid){
-        list=list.stream().map(b->{
-            if(b.getId()==bid){
-                b.setAuthor(book.getAuthor());
-                b.setTitle(book.getTitle());
-            }
-            return b;
-        }).collect(Collectors.toList());
-
+        book.setId(bid);
+        bookRepository.save(book);
     }
 }
