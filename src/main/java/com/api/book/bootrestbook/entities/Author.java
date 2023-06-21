@@ -18,7 +18,7 @@ public class Author {
     private String lastName;
 
     @OneToOne(mappedBy = "author")
-    
+    @JsonBackReference  //will not convert child field to Jsons so avoid infinite looping
     private Book book;
     
     public int getaId() {
